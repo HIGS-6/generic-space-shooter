@@ -1,43 +1,37 @@
-from tito_engine import Sprite, Transform, InputManager, Vec2
+from tito_engine.sound_manager import SoundManager
+from tito_engine.transform import Transform
+from tito_engine.sprite import Sprite
 from custom_objs.bullet import Bullet
 from tito_engine.world import World
 
 
-class SpaceShip(Sprite):
-    def __init__(self, move_speed: float, shoot_cooldown: float, path_to_img: str, transform: Transform = Transform(), enabled=True, tag: str = ''):
-        self._move_speed = move_speed
+class Spaceship(Sprite):
+    def __init__(self, speed: float, damage: float, shoot_cooldown: float, target_tags: list[str], path_to_img: str, transform: Transform = Transform(), enabled=True, tag: str = ''):
+        super().__init__(path_to_img, transform, enabled, tag)
+        self._speed = speed
+        self._damage = damage
         self._shoot_cooldown = shoot_cooldown
         self._current_cool_down = self._shoot_cooldown
-        super().__init__(path_to_img, transform, enabled, tag)
-        self._target_pos = self.transform.position
+        self._target_tags = target_tags
+        self._can_shoot = True
 
-    def update(self, world: World):
-        # print(f'GameObjects In Game: {len(world.game_objects)}')
-        self.detect_tap()
-        self.move_towards_target()
-        self.shoot(world)
-        super().update(world)
+    def shooting_cooldown(self, world):
+        # Run Float Timer only if we can not shoot
+        if self._can_shoot:
+            return
 
-    def move_towards_target(self):
-        if Vec2.distance(self.transform.position, self._target_pos) > 5:
-            # Face the Target Position
-            self.transform.look_at(self._target_pos)
-
-            # Move Towards the Target Position
-            self.transform.position += self.transform.forward() * self._move_speed
-
-    def detect_tap(self):
-        if InputManager.get_mouse_button(0):
-            self._target_pos = InputManager.get_mouse_pos()
-
-    def shoot(self, world: World):
-        # Run Float Timer
-        # print(f'Float Timer (Cooldown): {self._current_cool_down}')
         self._current_cool_down -= world.dt
+
         if self._current_cool_down <= 0:
-            world.instantiate(
-                Bullet(1.5, 12.5, 'Enemy', 'assets/sprites/Lasers/laserGreen11.png',
-                       Transform(self.transform.position + (self.transform.forward() * 60), self.transform.rotation, 0.75)))
+            self._can_shoot = True
 
             # Reset Float Timer
             self._current_cool_down = self._shoot_cooldown
+
+    def shoot(self, world: World):
+        if self._can_shoot:
+            SoundManager.play_sound('assets/sfx/laserSmall_001.ogg')
+            world.instantiate(
+                Bullet(1.5, 10, self._target_tags, 'assets/sprites/Lasers/laserGreen11.png',
+                       Transform(self.transform.position + (self.transform.forward() * 60), self.transform.rotation, 0.75)))
+            self._can_shoot = False

@@ -1,30 +1,30 @@
 # Generic Space Shooter
-from custom_objs.spaceship import SpaceShip
-from custom_objs.enemy import EnemySpaceship
+from custom_objs.enemy import Enemy
+from custom_objs.player import Player
 from random import uniform
 from tito_engine import *
 
-player = SpaceShip(
-    5.0, 1.0, path_to_img='assets/sprites/playerShip2_orange.png',
-    transform=Transform(Vec2(30, 360), 0, 1),
+player = Player(
+    5.0, 20.0, 0.25, ['Enemy', 'Asteroid'], path_to_img='assets/sprites/playerShip2_orange.png',
     tag='Player'
 )
 
 
 enemies = [
-    EnemySpaceship(
+    Enemy(
         2.5,
         20.0,
-        170,
+        3,
+        ['Player'],
         'assets/sprites/Enemies/enemyGreen1.png',
         Transform(
-            Vec2(uniform(50.0, 500.0), uniform(50.0, 500.0)),
+            Vec2(uniform(50.0, 1000.0), uniform(50.0, 100.0)),
             uniform(0.0, 360.0),
             scale=1,
         ),
         tag='Enemy'
     )
-    for _ in range(2)]
+    for _ in range(5)]
 
 
 TitoEngine(colour_fill=(40, 32, 51)).run([player, *enemies])
