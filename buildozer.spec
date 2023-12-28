@@ -1,10 +1,10 @@
 [app]
 
 # (str) Title of your application
-title = Test App
+title = Generic Space Shooter
 
 # (str) Package name
-package.name = testapp
+package.name = genericspaceshooter
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = com.higsdev
@@ -13,7 +13,7 @@ package.domain = com.higsdev
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas
+source.include_exts = py,png,jpg
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
@@ -47,7 +47,7 @@ requirements = python3,pygame,jnius,sdl2,sdl2_image,sdl2_mixer,sdl2_ttf,png,jpeg
 #presplash.filename = %(source.dir)s/data/presplash.png
 
 # (str) Icon of the application
-#icon.filename = %(source.dir)s/data/icon.png
+icon.filename = %(source.dir)assets/sprites/Enmies/enemyBlue1.png
 
 # (list) Supported orientations
 # Valid options are: landscape, portrait, portrait-reverse or landscape-reverse
@@ -67,7 +67,7 @@ orientation = landscape
 osx.python_version = 3
 
 # Kivy version to use
-osx.kivy_version = 1.9.1
+#osx.kivy_version = 1.9.1
 
 #
 # Android specific
@@ -81,7 +81,7 @@ fullscreen = 1
 # red, blue, green, black, white, gray, cyan, magenta, yellow, lightgray,
 # darkgray, grey, lightgrey, darkgrey, aqua, fuchsia, lime, maroon, navy,
 # olive, purple, silver, teal.
-android.presplash_color = white
+android.presplash_color = #282033
 
 # (string) Presplash animation using Lottie format.
 # see https://lottiefiles.com/ for examples and https://airbnb.design/lottie/

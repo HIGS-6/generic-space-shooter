@@ -4,6 +4,7 @@ from .game_object import GameObject
 class World:
     def __init__(self, window, initial_objects: list[GameObject] = []) -> None:
         self.window = window
+        self.dt = 0
         self.__game_objects: list[GameObject] = initial_objects
 
     @property
@@ -24,7 +25,8 @@ class World:
     def destroy(self, target_obj: GameObject) -> None:
         self.__game_objects.remove(target_obj)
     
-    def update(self):
+    def update(self, dt):
+        self.dt = dt
         for obj in self.__game_objects:
             if obj.enabled:
                 obj.update(self)

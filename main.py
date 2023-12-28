@@ -1,28 +1,30 @@
-from custom_objs.top_down_character import TapToMoveCharacterController
-from custom_objs.zombie import Zombie
+# Generic Space Shooter
+from custom_objs.spaceship import SpaceShip
+from custom_objs.enemy import EnemySpaceship
 from random import uniform
 from tito_engine import *
 
-player = TapToMoveCharacterController(
-    4.0, path_to_img='assets/sprites/survivor.png',
-    transform=Transform(Vec2(30, 360)),
+player = SpaceShip(
+    5.0, 1.0, path_to_img='assets/sprites/playerShip2_orange.png',
+    transform=Transform(Vec2(30, 360), 0, 1),
     tag='Player'
 )
 
 
-zombies = [
-    Zombie(
-        uniform(1.5, 3.25),
+enemies = [
+    EnemySpaceship(
+        2.5,
         20.0,
-        uniform(150.0, 350.0),
-        'assets/sprites/zombie.png',
+        170,
+        'assets/sprites/Enemies/enemyGreen1.png',
         Transform(
-            Vec2(uniform(50.0, 1000.0), uniform(50.0, 1000.0)),
+            Vec2(uniform(50.0, 500.0), uniform(50.0, 500.0)),
             uniform(0.0, 360.0),
-            scale=uniform(1.0, 1.25),
+            scale=1,
         ),
+        tag='Enemy'
     )
-for _ in range(10)]
+    for _ in range(2)]
 
 
-TitoEngine(colour_fill=(40, 40, 40)).run([player, *zombies])
+TitoEngine(colour_fill=(40, 32, 51)).run([player, *enemies])

@@ -43,9 +43,9 @@ class TitoEngine:
         # Main Loop
         while running:
             # Updating window
-            self.CLOCK.tick(self.FPS)
+            DT = self.CLOCK.tick(self.FPS) / 1000.0
             self.WIN.fill(self.COLOUR_FILL)
-            self.world.update()
+            self.world.update(DT)
 
             # Close Window when 'X' pressed
             for event in pg.event.get():
