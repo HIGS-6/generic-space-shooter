@@ -1,4 +1,4 @@
 env
 bin
 .buildozer
-__pycahce__
+__pycache__
