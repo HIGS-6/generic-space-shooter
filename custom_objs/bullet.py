@@ -22,7 +22,6 @@ class Bullet(Sprite):
         # print(targets)
         for target in targets:
             if self.rect.colliderect(target.rect):
-                print(f'Hit {target.tag}')
                 # When we hit the target we destroy it, spawn a VFX, Play a SFX and destroy ourselfs
                 # TODO: THAT                                 ^^^
                 SoundManager.play_sound('assets/sfx/explosionCrunch_003.ogg')
