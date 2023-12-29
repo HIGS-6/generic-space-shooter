@@ -14,10 +14,10 @@ class Enemy(Spaceship):
 
         if player:
             if Vec2.distance(player.transform.position, self.transform.position) > self._min_shooting_distance:
-                self.transform.position += self.transform.forward() * self._speed
+                self.transform.position += self.transform.forward() * self._speed * world.dt
             else:
                 # Close Enough to Open Fire
-                self.shoot(world)
+                self.shoot()
 
             self.transform.look_at(player.transform.position)
 

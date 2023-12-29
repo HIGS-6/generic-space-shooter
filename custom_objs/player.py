@@ -1,4 +1,4 @@
-from tito_engine import Transform, InputManager, Vec2
+from tito_engine import TitoEngine, Transform, InputManager, Vec2
 from custom_objs.spaceship import Spaceship
 from tito_engine.world import World
 from pygame.display import Info
@@ -16,10 +16,12 @@ class Player(Spaceship):
         # print(f'HP: {self._hp}', end='\r')
         label = world.find_obj_by_tag('Label')
 
-        if self._hp > 0:
-            label.text = f'HP: {self._hp}'
-        else:
-            label.text = 'Game Over'
+        # if self._hp > 0:
+        #     label.text = f'HP: {self._hp}'
+        # else:
+        #     label.text = 'Game Over'
+
+        label.text = f'FPS: {TitoEngine.FPS:.0f}'
 
         info = Info()
         label.transform.position = Vec2(
@@ -35,11 +37,11 @@ class Player(Spaceship):
             self.transform.look_at(self._target_pos)
 
             # Move Towards the Target Position
-            self.transform.position += self.transform.forward() * self._speed
+            self.transform.position += self.transform.forward() * self._speed * world.dt
 
         # Pew Pew!
         if len(world.find_objs_by_tags(self._target_tags)) > 0:
-            self.shoot(world)
+            self.shoot()
 
     def detect_tap(self):
         if InputManager.get_mouse_button(0):

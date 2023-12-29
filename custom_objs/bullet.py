@@ -15,12 +15,9 @@ class Bullet(Sprite):
     def update(self, world: World):
         super().update(world)
         # Go Forward
-        self.transform.position += self.transform.forward() * self._travel_speed
+        self.transform.position += self.transform.forward() * self._travel_speed * world.dt
 
-        # print(f'Targets: {self._target_tags}')
-        # Check for collisions:
         targets: list[Sprite] = world.find_objs_by_tags(self._target_tags)
-        # print(targets)
         for target in targets:
             if self.rect.colliderect(target.rect):
                 # When we hit the target we deal damage it, spawn a VFX, Play a SFX and destroy ourselfs

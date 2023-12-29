@@ -1,4 +1,5 @@
-from tito_engine.sound_manager import SoundManager
+from tito_engine.audio_source import AudioSource
+from tito_engine.object_pool import ObjectPool
 from tito_engine.transform import Transform
 from tito_engine.sprite import Sprite
 from custom_objs.bullet import Bullet
@@ -16,11 +17,18 @@ class Spaceship(Sprite):
         self._target_tags = target_tags
         self._can_shoot = True
 
+        # Object Pooling Set up
+        self._shooting_sfxs = ObjectPool(
+            AudioSource, 15, ('assets/sfx/laserSmall_001.ogg', 100.0, False, True))
+        
+        self._bullets = ObjectPool(Bullet, 15, (self._damage, 1.5, 900.0, self._target_tags, 'assets/sprites/Lasers/laserGreen11.png',
+                                                Transform(scale=0.75)))
+
     def update(self, world):
         super().update(world)
         self.shooting_cooldown(world)
         if self._hp <= 0:
-            SoundManager.play_sound('assets/sfx/explosionCrunch_003.ogg')
+            AudioSource.play_quick('assets/sfx/explosionCrunch_003.ogg')
             world.destroy(self)
 
     def shooting_cooldown(self, world):
@@ -36,14 +44,22 @@ class Spaceship(Sprite):
             # Reset Float Timer
             self._current_cool_down = self._shoot_cooldown
 
-    def shoot(self, world: World):
+    def shoot(self):
         if self._can_shoot:
-            SoundManager.play_sound('assets/sfx/laserSmall_001.ogg')
-            world.instantiate(
-                Bullet(self._damage, 1.5, 10, self._target_tags, 'assets/sprites/Lasers/laserGreen11.png',
-                       Transform(self.transform.position + (self.transform.forward() * 60), self.transform.rotation, 0.75)))
+            # Shooting Cooldown
             self._can_shoot = False
+
+            # Play SFX
+            sfx = self._shooting_sfxs.get()
+            sfx.play()
+
+            # Instantiate Bullet Object
+            bullet = self._bullets.get()
+
+            # Changing Bullet Position and Rotation
+            bullet.transform.rotation = self.transform.rotation
+            bullet.transform.position = self.transform.position + \
+                (self.transform.forward() * 60)
 
     def deal_damage(self, damage: float):
         self._hp -= damage
-        print(f'HP: {self._hp}', end='\r')

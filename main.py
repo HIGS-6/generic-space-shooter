@@ -1,21 +1,21 @@
+from tito_engine import *
 # Generic Space Shooter
 from tito_engine.gui.text import Text
 from custom_objs.player import Player
 from custom_objs.enemy import Enemy
 from random import uniform
-from tito_engine import *
 
 player = Player(
-    8.0, 25.0, 0.5, ['Enemy', 'Asteroid'], 150.0, path_to_img='assets/sprites/playerShip2_orange.png',
+    500.0, 25.0, 0.5, ['Enemy', 'Asteroid'], 150.0, path_to_img='assets/sprites/playerShip2_orange.png',
     tag='Player'
 )
 
-text = Text('Hello World!', 'Comic Sans MS', 50, tag='Label')
+text = Text('Hello World!', 'Comic Sans MS', 38, tag='Label')
 
 
 enemies = [
     Enemy(
-        2.0,
+        250.0,
         25.0,
         3,
         ['Player'],
