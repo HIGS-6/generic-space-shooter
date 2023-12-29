@@ -5,8 +5,9 @@ from tito_engine.world import World
 
 
 class Bullet(Sprite):
-    def __init__(self, life_time: float, speed: float, target_tags: list[str], path_to_img: str, transform: Transform = Transform(), enabled=True, tag: str = ''):
+    def __init__(self, damage, life_time: float, speed: float, target_tags: list[str], path_to_img: str, transform: Transform = Transform(), enabled=True, tag: str = ''):
         super().__init__(path_to_img, transform, enabled, tag)
+        self._damage = damage
         self._travel_speed = speed
         self._life_time = life_time
         self._target_tags = target_tags
@@ -22,10 +23,10 @@ class Bullet(Sprite):
         # print(targets)
         for target in targets:
             if self.rect.colliderect(target.rect):
-                # When we hit the target we destroy it, spawn a VFX, Play a SFX and destroy ourselfs
+                # When we hit the target we deal damage it, spawn a VFX, Play a SFX and destroy ourselfs
                 # TODO: THAT                                 ^^^
-                SoundManager.play_sound('assets/sfx/explosionCrunch_003.ogg')
-                world.destroy(target)
+                SoundManager.play_sound('assets/sfx/laserLarge_002.ogg')
+                target.deal_damage(self._damage)
                 world.destroy(self)
                 return
 

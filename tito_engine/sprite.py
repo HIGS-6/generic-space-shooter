@@ -1,14 +1,19 @@
 from pygame.transform import rotozoom
-from pygame.image import load
 from .game_object import GameObject
+from pygame.surface import Surface
 from .transform import Transform
 from .utils import resource_path
+from pygame.image import load
 
 
 class Sprite(GameObject):
-    def __init__(self, path_to_img: str, transform: Transform = Transform(), enabled=True, tag: str = ''):
+    def __init__(self, path_or_surface: str | Surface, transform: Transform = Transform(), enabled=True, tag: str = ''):
         super().__init__(transform, enabled, tag)
-        self.original_img = load(resource_path(path_to_img))
+        if type(path_or_surface) == str:
+            self.original_img = load(resource_path(path_or_surface))
+        else:
+            self.original_img = path_or_surface
+
         self.previous_rot = 0
         self.image = self.original_img
 

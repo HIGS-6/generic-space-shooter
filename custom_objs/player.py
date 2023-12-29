@@ -5,19 +5,28 @@ from pygame.display import Info
 
 
 class Player(Spaceship):
-    def __init__(self, speed: float, damage: float, shoot_cooldown: float, target_tags: list[str], path_to_img: str, transform: Transform = Transform(), enabled=True, tag: str = ''):
-        super().__init__(speed, damage, shoot_cooldown, target_tags,
+    def __init__(self, speed: float, damage: float, shoot_cooldown: float, target_tags: list[str], health_points, path_to_img: str, transform: Transform = Transform(), enabled=True, tag: str = ''):
+        super().__init__(speed, damage, shoot_cooldown, target_tags, health_points,
                          path_to_img, transform, enabled, tag)
         info = Info()
-        self.transform.position = Vec2(info.current_h / 2, info.current_w / 2)
+        self.transform.position = Vec2(info.current_w / 2, info.current_h / 2)
         self._target_pos = self.transform.position
 
     def update(self, world: World):
-        # print(f'GameObjects In Game: {len(world.game_objects)}')
+        # print(f'HP: {self._hp}', end='\r')
+        label = world.find_obj_by_tag('Label')
+
+        if self._hp > 0:
+            label.text = f'HP: {self._hp}'
+        else:
+            label.text = 'Game Over'
+
+        info = Info()
+        label.transform.position = Vec2(
+            info.current_w / 2, info.current_h - 100)
+
         self.detect_tap()
         self.move_towards_target(world)
-        self.shooting_cooldown(world)
-        # self.shoot(world)
         super().update(world)
 
     def move_towards_target(self, world):

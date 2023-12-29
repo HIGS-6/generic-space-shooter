@@ -4,9 +4,9 @@ from custom_objs.spaceship import Spaceship
 
 
 class Enemy(Spaceship):
-    def __init__(self, speed: float, damage: float, shoot_cooldown: float, target_tags: list[str], path_to_img: str, transform: Transform = Transform(), enabled=True, tag: str = ''):
+    def __init__(self, speed: float, damage: float, shoot_cooldown: float, target_tags: list[str], health_points, path_to_img: str, transform: Transform = Transform(), enabled=True, tag: str = ''):
         super().__init__(speed, damage, shoot_cooldown,
-                         target_tags, path_to_img, transform, enabled, tag)
+                         target_tags, health_points, path_to_img, transform, enabled, tag)
         self._min_shooting_distance = 500
 
     def update(self, world: World):
@@ -21,7 +21,6 @@ class Enemy(Spaceship):
 
             self.transform.look_at(player.transform.position)
 
-            self.shooting_cooldown(world)
-        
+            # self.shooting_cooldown(world)
 
         super().update(world)
